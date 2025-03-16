@@ -1,6 +1,7 @@
 package trackDeliveryApp.trackDeliveryApp.service;
 
 import org.springframework.stereotype.Service;
+import trackDeliveryApp.trackDeliveryApp.exceptionsHandler.PhoneNumberAlreadyExistsException;
 import trackDeliveryApp.trackDeliveryApp.model.Customer;
 import trackDeliveryApp.trackDeliveryApp.repository.CustomerRepository;
 
@@ -25,6 +26,9 @@ public class CustomerService {
     }
 
     public Customer createCustomer(Customer customer) {
+        if (customerRepository.existsByPhone(customer.getPhone())) {
+            throw new PhoneNumberAlreadyExistsException(customer.getPhone());
+        }
         return customerRepository.save(customer);
     }
 

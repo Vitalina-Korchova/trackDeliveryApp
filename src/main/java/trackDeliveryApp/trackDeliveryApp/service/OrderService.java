@@ -1,7 +1,7 @@
 package trackDeliveryApp.trackDeliveryApp.service;
 
 import org.springframework.stereotype.Service;
-import trackDeliveryApp.trackDeliveryApp.dto.OrderDTO;
+import trackDeliveryApp.trackDeliveryApp.exceptionsHandler.ObjectNotFoundException;
 import trackDeliveryApp.trackDeliveryApp.model.Customer;
 import trackDeliveryApp.trackDeliveryApp.model.Order;
 import trackDeliveryApp.trackDeliveryApp.model.Product;
@@ -69,18 +69,18 @@ public class OrderService {
 
     public Customer findCustomerByName(String name) {
         return customerRepository.findCustomerByName(name)
-                .orElseThrow(() -> new RuntimeException("Customer not found with name: " + name));
+                .orElseThrow(() -> new ObjectNotFoundException("Customer not found with name: " + name));
     }
 
     public Product findProductByName(String name) {
         return productRepository.findProductByName(name)
-                .orElseThrow(() -> new RuntimeException("Product not found with name: " + name));
+                .orElseThrow(() -> new ObjectNotFoundException("Product not found with name: " + name));
     }
 
     public String generateOrderNumber() {
         String orderNumber = "000";
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyHHmm");
         orderNumber += now.format(formatter);
         return orderNumber;
     }

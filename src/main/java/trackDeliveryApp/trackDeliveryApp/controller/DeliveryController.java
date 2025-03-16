@@ -1,5 +1,6 @@
 package trackDeliveryApp.trackDeliveryApp.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import trackDeliveryApp.trackDeliveryApp.dto.DeliveryDTO;
@@ -10,6 +11,7 @@ import trackDeliveryApp.trackDeliveryApp.model.Customer;
 import trackDeliveryApp.trackDeliveryApp.model.Delivery;
 import trackDeliveryApp.trackDeliveryApp.model.Order;
 import trackDeliveryApp.trackDeliveryApp.model.Product;
+import trackDeliveryApp.trackDeliveryApp.response.DeliveryResponse;
 import trackDeliveryApp.trackDeliveryApp.service.DeliveryService;
 
 import java.util.List;
@@ -28,21 +30,21 @@ public class DeliveryController {
     }
 
     @GetMapping
-    public List<DeliveryDTO> getAllDeliveries() {
+    public List<DeliveryResponse> getAllDeliveries() {
         return deliveryService.getAllDeliveries().stream()
-                .map(deliveryMapper::toDTO)
+                .map(deliveryMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{deliveryId}")
-    public DeliveryDTO getDeliveryById(@PathVariable String deliveryId) {
+    public DeliveryResponse getDeliveryById(@PathVariable String deliveryId) {
         Delivery delivery = deliveryService.getDeliveryById(deliveryId);
-        return deliveryMapper.toDTO(delivery);
+        return deliveryMapper.toResponse(delivery);
     }
 
 
     @PostMapping
-    public DeliveryDTO createDelivery(@RequestBody DeliveryDTO deliveryDTO) {
+    public DeliveryDTO createDelivery(@Valid @RequestBody DeliveryDTO deliveryDTO) {
 
         Order order = deliveryService.findOrderByOrderNumber(deliveryDTO.getOrderNumber());
 
@@ -56,7 +58,7 @@ public class DeliveryController {
     }
 
     @PutMapping("/{deliveryId}")
-    public DeliveryDTO updateDelivery(@PathVariable String deliveryId, @RequestBody DeliveryDTO deliveryDTO) {
+    public DeliveryDTO updateDelivery(@Valid @PathVariable String deliveryId, @RequestBody DeliveryDTO deliveryDTO) {
 
         Order order = deliveryService.findOrderByOrderNumber(deliveryDTO.getOrderNumber());
 

@@ -1,5 +1,6 @@
 package trackDeliveryApp.trackDeliveryApp.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class CustomerController {
 
 
     @PostMapping
-    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<CustomerDTO> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
         Customer customer = customerMapper.toEntity(customerDTO);
         Customer savedCustomer = customerService.createCustomer(customer);
         return ResponseEntity.ok(customerMapper.toDTO(savedCustomer));
@@ -48,7 +49,7 @@ public class CustomerController {
 
 
     @PutMapping("/{customerId}")
-    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable String customerId, @RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<CustomerDTO> updateCustomer(@Valid @PathVariable String customerId, @RequestBody CustomerDTO customerDTO) {
         Customer customer = customerMapper.toEntity(customerDTO);
         Customer updatedCustomer = customerService.updateCustomer(customerId, customer);
         return ResponseEntity.ok(customerMapper.toDTO(updatedCustomer));

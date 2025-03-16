@@ -1,5 +1,9 @@
 package trackDeliveryApp.trackDeliveryApp.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerDTO {
+    @NotEmpty(message = "Customer name must not be empty")
     private String name;
+    @Email(message = "Email should be valid")
     private String email;
     private String phone;
 

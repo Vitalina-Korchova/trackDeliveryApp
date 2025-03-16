@@ -1,5 +1,6 @@
 package trackDeliveryApp.trackDeliveryApp.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import trackDeliveryApp.trackDeliveryApp.dto.OrderDTO;
@@ -39,7 +40,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public OrderDTO createOrder(@RequestBody OrderDTO orderDTO) {
+    public OrderDTO createOrder(@Valid @RequestBody OrderDTO orderDTO) {
 
         Customer customer = orderService.findCustomerByName(orderDTO.getCustomerName());
 
@@ -58,7 +59,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
-    public OrderDTO updateOrder(@PathVariable String orderId, @RequestBody OrderDTO orderDTO) {
+    public OrderDTO updateOrder(@Valid @PathVariable String orderId, @RequestBody OrderDTO orderDTO) {
         Customer customer = orderService.findCustomerByName(orderDTO.getCustomerName());
 
         List<Product> products = orderDTO.getProductsName().stream()

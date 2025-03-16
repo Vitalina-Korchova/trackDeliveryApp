@@ -1,5 +1,6 @@
 package trackDeliveryApp.trackDeliveryApp.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import trackDeliveryApp.trackDeliveryApp.dto.ProductDTO;
@@ -37,14 +38,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductDTO createProduct(@RequestBody ProductDTO productDTO) {
+    public ProductDTO createProduct(@Valid @RequestBody ProductDTO productDTO) {
         Product product = productMapper.toEntity(productDTO);
         Product savedProduct = productService.createProduct(product);
         return productMapper.toDTO(savedProduct);
     }
 
     @PutMapping("/{productId}")
-    public ProductDTO updateProduct(@PathVariable String productId, @RequestBody ProductDTO productDTO) {
+    public ProductDTO updateProduct(@Valid @PathVariable String productId, @RequestBody ProductDTO productDTO) {
         Product product = productMapper.toEntity(productDTO);
         Product updatedProduct = productService.updateProduct(productId, product);
         return productMapper.toDTO(updatedProduct);
