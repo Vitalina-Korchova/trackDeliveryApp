@@ -21,6 +21,7 @@ public class Order {
     private Customer customer;
     @DocumentReference (collection = "Product")
     private List<Product> products;
+    private String orderNumber;
     private double totalAmount;
     private String shippingAddress;
     private String status;

@@ -1,14 +1,15 @@
-package trackDeliveryApp.trackDeliveryApp.dto;
+package trackDeliveryApp.trackDeliveryApp.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class DeliveryDTO {
+public class DeliveryResponse {
     private String orderNumber;
+    private String customerName;
+    private double totalAmount;
+    private String shippingAddress;
     private String currentLocation;
     private String deliveryStatus;
 }

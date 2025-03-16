@@ -2,39 +2,71 @@ package trackDeliveryApp.trackDeliveryApp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import trackDeliveryApp.trackDeliveryApp.dto.DeliveryDTO;
+import trackDeliveryApp.trackDeliveryApp.dto.OrderDTO;
+import trackDeliveryApp.trackDeliveryApp.mapper.DeliveryMapper;
+import trackDeliveryApp.trackDeliveryApp.mapper.OrderMapper;
+import trackDeliveryApp.trackDeliveryApp.model.Customer;
 import trackDeliveryApp.trackDeliveryApp.model.Delivery;
+import trackDeliveryApp.trackDeliveryApp.model.Order;
+import trackDeliveryApp.trackDeliveryApp.model.Product;
 import trackDeliveryApp.trackDeliveryApp.service.DeliveryService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/deliveries")
 public class DeliveryController {
     private final DeliveryService deliveryService;
+    private DeliveryMapper deliveryMapper;
 
     @Autowired
-    public DeliveryController(DeliveryService deliveryService) {
+    public DeliveryController(DeliveryService deliveryService,DeliveryMapper deliveryMapper) {
         this.deliveryService = deliveryService;
+        this.deliveryMapper = deliveryMapper;
     }
 
     @GetMapping
-    public List<Delivery> getAllDeliveries() {
-        return deliveryService.getAllDeliveries();
+    public List<DeliveryDTO> getAllDeliveries() {
+        return deliveryService.getAllDeliveries().stream()
+                .map(deliveryMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{deliveryId}")
-    public Delivery getDeliveryById(@PathVariable String deliveryId) {
-        return deliveryService.getDeliveryById(deliveryId);
+    public DeliveryDTO getDeliveryById(@PathVariable String deliveryId) {
+        Delivery delivery = deliveryService.getDeliveryById(deliveryId);
+        return deliveryMapper.toDTO(delivery);
     }
 
+
     @PostMapping
-    public Delivery createDelivery(@RequestBody Delivery delivery) {
-        return deliveryService.createDelivery(delivery);
+    public DeliveryDTO createDelivery(@RequestBody DeliveryDTO deliveryDTO) {
+
+        Order order = deliveryService.findOrderByOrderNumber(deliveryDTO.getOrderNumber());
+
+        Delivery delivery = new Delivery();
+        delivery.setOrder(order);
+        delivery.setCurrentLocation(deliveryDTO.getCurrentLocation());
+        delivery.setDeliveryStatus(deliveryDTO.getDeliveryStatus());
+
+        Delivery savedDelivery = deliveryService.createDelivery(delivery);
+        return deliveryMapper.toDTO(savedDelivery);
     }
 
     @PutMapping("/{deliveryId}")
-    public Delivery updateDelivery(@PathVariable String deliveryId, @RequestBody Delivery delivery) {
-        return deliveryService.updateDelivery(deliveryId, delivery);
+    public DeliveryDTO updateDelivery(@PathVariable String deliveryId, @RequestBody DeliveryDTO deliveryDTO) {
+
+        Order order = deliveryService.findOrderByOrderNumber(deliveryDTO.getOrderNumber());
+
+        Delivery delivery = new Delivery();
+        delivery.setOrder(order);
+        delivery.setCurrentLocation(deliveryDTO.getCurrentLocation());
+        delivery.setDeliveryStatus(deliveryDTO.getDeliveryStatus());
+
+        Delivery updatedDelivery = deliveryService.updateDelivery(deliveryId, delivery);
+        return deliveryMapper.toDTO(updatedDelivery);
     }
 
     @DeleteMapping("/{deliveryId}")

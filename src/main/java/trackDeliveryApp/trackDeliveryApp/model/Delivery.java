@@ -18,10 +18,9 @@ public class Delivery {
     private String deliveryId;
     @DocumentReference (collection = "Order")
     private Order order;
-    private String courierName;
-    private String deliveryCompany;
-    private String estimatedDeliveryDate;
+    private String deliveryCompany; //вставити нова пошта авто заповнення
+    private String estimatedDeliveryDate;//сьогоднішня дата +2 дні
     private String currentLocation;
     private String deliveryStatus;
-    private String trackingNumber;
+    private String trackingNumber; //створити рандом циферки і літери
 }

@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import trackDeliveryApp.trackDeliveryApp.dto.OrderDTO;
+import trackDeliveryApp.trackDeliveryApp.model.Customer;
 import trackDeliveryApp.trackDeliveryApp.model.Order;
 import trackDeliveryApp.trackDeliveryApp.model.Product;
 
@@ -23,8 +24,6 @@ public interface OrderMapper {
     }
 
     @Mapping(target = "orderId", ignore = true)
-    @Mapping(target = "customer", ignore = true)
-    @Mapping(target = "products", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
-    Order toEntity(OrderDTO orderDTO);
+    Order toEntity(OrderDTO orderDTO, Customer customer, List<Product> products);
 }
