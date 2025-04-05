@@ -10,7 +10,7 @@ import trackDeliveryApp.trackDeliveryApp.response.DeliveryResponse;
 @Mapper(componentModel = "spring")
 public interface DeliveryMapper {
 
-    @Mapping(source = "deliveryId", target = "orderNumber")
+    @Mapping(source = "order.orderNumber", target = "orderNumber")
     @Mapping(source = "currentLocation", target = "currentLocation")
     @Mapping(source = "deliveryStatus", target = "deliveryStatus")
     DeliveryDTO toDTO(Delivery delivery);
